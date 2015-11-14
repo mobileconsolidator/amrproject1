@@ -30,7 +30,7 @@ define([
 				 App.isLogin = true;
 				 App.showMain();
 			 }else{
-				 console.log('login failed');
+				 Utilities.displayMessage("#error-div","Login Failed,Email or Password is incorrect");
 			 } 
 		  });
 	  },
