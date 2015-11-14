@@ -1,0 +1,14 @@
+define([],function(){
+	var Utilities = {
+		isEmpty: function(value){
+			if(value == null || value == undefined || value == ""){
+				return true;
+			}else{
+				return false;
+			}
+		}
+	}
+	
+	return Utilities;
+	
+});
