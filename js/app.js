@@ -2,8 +2,10 @@ define([
 'marionette',
 'view/CategoryList',
 'app/data',
-"view/login"
-],function(marionette,CategoryList,data,LoginView){
+"view/login",
+"app/controller/configController",
+"view/ConfigView"
+],function(marionette,CategoryList,data,LoginView,ConfigController,ConfigView){
 	App = new Backbone.Marionette.Application();
 	window.App = App;
 	App.isLogin = false;
@@ -32,11 +34,14 @@ define([
 	
 	$(document).ready(function(){
 	   App.start();
-	   if(App.isLogin){
-		   App.showMain();
-	   }else{
-		   var loginView = new LoginView();
-		   App.setContentView(loginView);
-	   }
+	  
+	   ConfigController.hasQuestions().done(function(response){
+		   if(response){
+			   var configView = new ConfigView();
+			   App.setContentView(configView);
+		   }else{
+			   App.showMain();
+		   }
+	   });
 	});
 });
