@@ -31,11 +31,25 @@ define([
 			var invoke = $.Deferred();
 			var model = {};
 			this.getCompany().done(function(response){
-				model = response['0'];
-				invoke.resolve(model);
+              model = $.extend({},model,response['0']);
+				
 			});
+          this,getFormConfiguration().done(function(response){
+            model = $.extend({},model,response['0']);
+            invoke.resolve(model);
+          });
 			return invoke;
 		},
+      getFormConfiguration : function(){
+      	var invoke = $.Deferred();
+        DatabaseManager.query('SELECT * FROM form_configuration').done(function(){
+          if(response.status){
+          	invoke.resolve(response.data);
+          }else{
+          
+          }
+        });
+      },
 		getCompany : function(){
 			var invoke = $.Deferred();
 			DatabaseManager.query('SELECT * FROM company_configuration').done(function(response){
