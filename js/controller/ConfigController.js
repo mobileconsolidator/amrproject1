@@ -27,6 +27,15 @@ define([
 		saveOrUpdateQuestion : function(data){
 			
 		},
+		getData: function(){
+			var invoke = $.Deferred();
+			var model = {};
+			this.getCompany().done(function(response){
+				model = response['0'];
+				invoke.resolve(model);
+			});
+			return invoke;
+		},
 		getCompany : function(){
 			var invoke = $.Deferred();
 			DatabaseManager.query('SELECT * FROM company_configuration').done(function(response){
