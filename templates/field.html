@@ -1,0 +1,24 @@
+<div class="form-group">
+<label for="txtField<%= fieldNumber %>Caption">Field <%= fieldNumber %> Caption</label>
+<input type="text" class="form-control inputfield" id="txtField<%= fieldNumber %>Caption" value="<%= caption %>" placeholder="Field <%= fieldNumber %> Caption">
+</div>
+<div class="form-group">
+<label for="txtField<%= fieldNumber %>Sequence">Field <%= fieldNumber %> Sequence</label>
+<input type="text" class="form-control inputfield" id="txtField<%= fieldNumber %>Sequence" value="<%= sequence %>" placeholder="Field <%= fieldNumber %> Sequence">
+</div>
+<div class="form-group">
+<label for="txtField<%= fieldNumber %>DataType">Field <%= fieldNumber %> Data Type</label>
+<select class="form-control select-picker inputfield" id="txtField<%= fieldNumber %>DataType">
+	<%
+		_.each(dataTypes, function(dtype){ %>
+		<% 
+		console.log(dtype);
+		console.log(dataType);
+		if(dtype == dataType){ %>
+			<option selected><%= dtype %></option>
+		<% } else { %>
+			<option><%= dtype %></option>
+		<%} })
+	%>
+</select>
+</div>

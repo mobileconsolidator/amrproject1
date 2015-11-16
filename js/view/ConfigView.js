@@ -2,8 +2,9 @@ define([
 		"text!templates/config.html",
 		"app/controller/ConfigController",
 		"app/util/util",
+		"view/FieldView",
 		"marionette"
-	], function (tmpl, ConfigController, Utilities) {
+	], function (tmpl, ConfigController, Utilities,FieldView) {
 
 	var ConfigView = Backbone.Marionette.ItemView.extend({
 			template : tmpl,
@@ -17,12 +18,24 @@ define([
 				_this = this;
 
 			},
+			setModelValue : function(response){
+				this.model.set(response);
+			},
 			onRender : function () {
 				_this = this;
 				ConfigController.getData().done(function(response){
+					console.log(response);
 					_this.model.set(response);
 					var template = _.template(_this.template);
 					_this.$el.html(template(_this.model.attributes));
+					for(var x=1;x<=4;x++){
+						var field = new FieldView({fieldNumber : x, caption : response['field' + x +'_caption'],sequence : response['field' + x +'_sequence'],dataType : response['field' + x +'_datatype']});
+						_this.listenTo(field,FieldView.SAVE_DATA,_this.setModelValue);
+						field.render();
+						$("#field" + x).empty().append(field.el);
+					}
+					
+					
 				})
 				
 
@@ -47,20 +60,12 @@ define([
 					ConfigController.saveOrUpdateCompany(companyData);
 				}
 
-				var configurationData = {
-					field1Caption : $("#txtField1Caption").val(),
-					field1Sequence : $("#txtField1Sequence").val(),
-					field1DataType : $("#txtField1DataType").val(),
-					field2Caption : $("#txtField2Caption").val(),
-					field2Sequence : $("#txtField2Sequence").val(),
-					field2DataType : $("#txtField2DataType").val(),
-					field3Caption : $("#txtField3Caption").val(),
-					field3Sequence : $("#txtField3Sequence").val(),
-					field3DataType : $("#txtField3DataType").val(),
-					field4Caption : $("#txtField4Caption").val(),
-					field4Sequence : $("#txtField4Sequence").val(),
-					field4DataType : $("#txtField4DataType").val()
-				}
+				var configurationData = {};
+			for(var x=1;x<=4;x++){
+				configurationData['field'+x+'Caption'] = this.model.get('field'+x+'_caption');
+				configurationData['field'+x+'Sequence'] = this.model.get('field'+x+'_sequence');
+				configurationData['field'+x+'DataType'] = this.model.get('field'+x+'_datatype');
+			}
 
 				ConfigController.saveOrUpdateForm(configurationData);
 			}
