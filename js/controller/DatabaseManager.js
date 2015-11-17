@@ -14,11 +14,6 @@ define([], function () {
 				console.log('success');
 			},
 			onNull : function (a, b, c) {
-
-				console.log(a);
-				console.log(b)
-				console.log(c);
-				console.log('error');
 			}
 
 		},
@@ -54,38 +49,53 @@ define([], function () {
 			});
 			return invoke;
 		},
-		isEmpty:function(query){
-			var  invoke = $.Deferred();
-			this.query(query).done(function(response){
-				if(response.data.length == 0){
+		isEmpty : function (query) {
+			var invoke = $.Deferred();
+			this.query(query).done(function (response) {
+				if (response.data.length == 0) {
 					invoke.resolve(true);
-				}else{
+				} else {
 					invoke.resolve(false);
 				}
 			});
 			return invoke;
 		},
-      insert:function(query){
-      	var invoke = $.Deffered();
-        var initInvoke = undefined;
-        if(this.db === undefined){
-        	initInvoke = this.init();
-        }else{
-        	initInvoke = $.Deferred();
-          	initInvoke.resolve();
-        }
-        
-        var _this = this;
-        initInvoke.done(function(){
-        	
-          var onSuccess = function(transaction,result){
-          
-          };
-          
-          
-        });
-        return invoke;
-      },
+		insert : function (query) {
+			var invoke = $.Deferred();
+			var initInvoke = undefined;
+			if (this.db === undefined) {
+				initInvoke = this.init();
+			} else {
+				initInvoke = $.Deferred();
+				initInvoke.resolve();
+			}
+
+			var _this = this;
+			initInvoke.done(function () {
+
+				var onSuccess = function (transaction, result) {
+					if (result != null || result.rows != null) {
+						invoke.resolve({
+							status : true,
+							id : result.insertId
+						});
+					} else {
+						invoke.resole({
+							status : false,
+							id : -1
+						})
+					}
+				}
+				var onError = function () {};
+
+				_this.db.transaction(function (tx) {
+					tx.executeSql(query, [], onSuccess, onError);
+
+				}, _this.events.onError, _this.events.onSuccess);
+
+			});
+			return invoke;
+		},
 		query : function (query) {
 			var invoke = $.Deferred();
 			var initInvoke = undefined;
@@ -112,7 +122,7 @@ define([], function () {
 					}
 				}
 
-				var onError = function () {}
+				var onError = function () {};
 
 				_this.db.transaction(function (tx) {
 					tx.executeSql(query, [], onSuccess, onError);

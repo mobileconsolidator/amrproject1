@@ -6,8 +6,8 @@ define([
 	  template:'',
 	  tagName : 'div',
 	  childView: CategoryItem,
-	  initialize: function(options){
-		  this.collection = options.collection;
+	  setCollection: function(collection){
+		  this.collection  = collection;
 	  }
 	});
 	

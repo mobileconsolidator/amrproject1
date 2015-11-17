@@ -14,10 +14,8 @@ define([
 	});
 	
 	App.addInitializer(function(options){
-	  var collection = new Backbone.Collection(data.getListOfQuestion());
-	  this.categoryList = new CategoryList({
-		collection: collection
-	  });
+	  
+	  this.categoryList = new CategoryList();
 	  
 	});
 	
@@ -28,7 +26,12 @@ define([
 	}
 	
 	App.showMain = function(){
-		this.mainRegion.show(this.categoryList);
+		var _this = this;
+		ConfigController.getQuestions().done(function(response){
+			_this.categoryList.setCollection(new Backbone.Collection(response));
+			_this.mainRegion.show(_this.categoryList);
+		});
+		
 	}
 	
 	
@@ -36,11 +39,12 @@ define([
 	   App.start();
 	  
 	   ConfigController.hasQuestions().done(function(response){
+		   console.log(response);
 		   if(response){
+			   App.showMain();
+		   }else{
 			   var configView = new ConfigView();
 			   App.setContentView(configView);
-		   }else{
-			   App.showMain();
 		   }
 	   });
 	});

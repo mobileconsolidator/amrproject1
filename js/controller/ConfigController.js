@@ -25,29 +25,43 @@ define([
 
 			});
 		},
-		saveOrUpdateQuestion : function (data) {
-          DatabaseManager.query('DELETE FROM questions').done(function(){
-            DatabaseManager.query('DELETE FROM answers').done(function(){
-          		_.each(data,function(d){
-                  DatabaseManager.insert'INSERT INTO questions(caption) VALUES("'+d.question+'")').done(function(response){
-                    _.each(d.items,function(answer){
-                    	DatabaseManager.insert('INSERT INTO answers(question_id,caption)  VALUES('+response.id+',"'+answer+'")');
-                    });
-                  });
-          		});  
-            });
-          });
-          
-        },
+		saveOrUpdateQuestions : function (data) {
+			DatabaseManager.query('DELETE FROM questions').done(function () {
+				DatabaseManager.query('DELETE FROM answers').done(function () {
+					_.each(data, function (d) {
+						DatabaseManager.insert('INSERT INTO questions(caption) VALUES("' + d.question + '")').done(function (response) {
+							_.each(d.items, function (answer) {
+								DatabaseManager.insert('INSERT INTO answers(question_id,caption)  VALUES(' + response.id + ',"' + answer + '")');
+							});
+						});
+					});
+				});
+			});
+
+		},
 		getData : function () {
 			var invoke = $.Deferred();
 			var model = {};
-			this.getCompany().done(function (response) {
-				model = $.extend({}, model, response['0']);
+			var task1= this.getCompany();
+			task1.done(function (response) {
+				if(response.length > 0){
+					model = $.extend({}, model, response['0']);
+				}
 
 			});
-			this.getFormConfiguration().done(function (response) {
-				model = $.extend({}, model, response['0']);
+			var task2 = this.getFormConfiguration();
+			task2.done(function (response) {
+				if(response.length > 0){
+					model = $.extend({}, model, response['0']);
+				
+				}
+			});
+			
+			var task3 = this.getQuestions()
+			task3.done(function(response){
+				model.questions = response;
+			});
+			$.when(task1,task2,task3).then(function(){
 				invoke.resolve(model);
 			});
 			return invoke;
@@ -73,11 +87,47 @@ define([
 			});
 			return invoke;
 		},
+		getQuestions:function(){
+			var invoke = $.Deferred();
+			var data = [];
+			DatabaseManager.query('SELECT rowid as questionId, caption as caption  FROM questions').done(function(response){
+				
+				var tasks = [];
+				if(response.status){
+					_.each(response.data,function(d){
+						var question = {};
+						question.caption = d.caption;
+						question.items = [];
+						var task = DatabaseManager.query('SELECT * FROM answers WHERE question_id='+d.questionId);
+						tasks.push(task);
+						task.done(function(result){
+							if(result.status){
+								_.each(result.data,function(a){
+									question.items.push({ caption : a.caption });
+								});
+								data.push(question);
+							}
+						});
+					});
+					
+				}
+				$.when.apply($,tasks).then(function(){
+					invoke.resolve(data);
+				});
+				
+			});
+			return invoke;
+		},
+		
 		hasQuestions : function () {
 			var invoke = $.Deferred();
 			DatabaseManager.query("SELECT * FROM questions").done(function (response) {
 				if (response.status) {
-					invoke.resolve(response.data);
+					if(response.data.length > 0){
+						invoke.resolve(true);
+					}else{
+						invoke.resolve(false);
+					}
 				} else {
 					invoke.reject();
 				}

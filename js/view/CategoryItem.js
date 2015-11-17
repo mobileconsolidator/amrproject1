@@ -8,7 +8,9 @@ define([
 	  template:tmpl,
 	  tagName : 'div',
 	  className: 'list-group',
+	  
 	  onRender:function(){
+		  console.log(this.model);
 		  var template = _.template(this.template);
 		  if(this.model != undefined){
 		  this.$el.html(template(this.model.attributes));
