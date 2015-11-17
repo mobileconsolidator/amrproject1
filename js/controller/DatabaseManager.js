@@ -65,6 +65,27 @@ define([], function () {
 			});
 			return invoke;
 		},
+      insert:function(query){
+      	var invoke = $.Deffered();
+        var initInvoke = undefined;
+        if(this.db === undefined){
+        	initInvoke = this.init();
+        }else{
+        	initInvoke = $.Deferred();
+          	initInvoke.resolve();
+        }
+        
+        var _this = this;
+        initInvoke.done(function(){
+        	
+          var onSuccess = function(transaction,result){
+          
+          };
+          
+          
+        });
+        return invoke;
+      },
 		query : function (query) {
 			var invoke = $.Deferred();
 			var initInvoke = undefined;

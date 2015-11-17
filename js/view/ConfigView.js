@@ -3,8 +3,9 @@ define([
 		"app/controller/ConfigController",
 		"app/util/util",
 		"view/FieldView",
+  		"view/QuestionView",
 		"marionette"
-	], function (tmpl, ConfigController, Utilities,FieldView) {
+	], function (tmpl, ConfigController, Utilities,FieldView,QuestionView) {
 
 	var ConfigView = Backbone.Marionette.ItemView.extend({
 			template : tmpl,
@@ -13,7 +14,15 @@ define([
 				this.model = new Backbone.Model();
 				this.model.set('company_name', '');
 				this.model.set('general_question_survey', '');
+              this.questionViewList = [];
 			},
+      
+      addQuestionView:function(){
+        var questionView =new QuestionView({model:_this.model});
+        questionView.render();
+        this.questionViewList.push(questionView);
+        $('#questions').append(questionView.el);
+      },
 			onBeforeRender : function () {
 				_this = this;
 
@@ -34,8 +43,7 @@ define([
 						field.render();
 						$("#field" + x).empty().append(field.el);
 					}
-					
-					
+          			_this.addQuestionView();
 				})
 				
 
@@ -43,7 +51,7 @@ define([
 			},
 			events : {
 				"click #btnSave" : "saveConfig",
-				"click #btnAddNew" : "addNew"
+				"click #btnAddNewQuestion" : "addQuestionView"
 			},
 			addNew : function () {
 				$("#answer-form").append('<label for="exampleInputEmail1">Caption</label><input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">')
@@ -68,6 +76,13 @@ define([
 			}
 
 				ConfigController.saveOrUpdateForm(configurationData);
+              
+              var questionData = [];
+              _.each(this.questionViewList,function(view){
+              	questionData.push(view.getData());
+              });
+              
+              ConfigController.saveOrUpdateQuestions(questionData);
 			}
 		});
 

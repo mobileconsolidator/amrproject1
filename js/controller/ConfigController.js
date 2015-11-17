@@ -25,7 +25,20 @@ define([
 
 			});
 		},
-		saveOrUpdateQuestion : function (data) {},
+		saveOrUpdateQuestion : function (data) {
+          DatabaseManager.query('DELETE FROM questions').done(function(){
+            DatabaseManager.query('DELETE FROM answers').done(function(){
+          		_.each(data,function(d){
+                  DatabaseManager.insert'INSERT INTO questions(caption) VALUES("'+d.question+'")').done(function(response){
+                    _.each(d.items,function(answer){
+                    	DatabaseManager.insert('INSERT INTO answers(question_id,caption)  VALUES('+response.id+',"'+answer+'")');
+                    });
+                  });
+          		});  
+            });
+          });
+          
+        },
 		getData : function () {
 			var invoke = $.Deferred();
 			var model = {};
