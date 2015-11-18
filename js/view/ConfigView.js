@@ -18,8 +18,11 @@ define([
 			},
 
 			addQuestionView : function (model) {
-				if(model.caption === undefined){
-					model = { caption : '', items : []};
+				if (model.caption === undefined) {
+					model = {
+						caption : '',
+						items : []
+					};
 				}
 				var questionView = new QuestionView({
 						model : new Backbone.Model(model)
@@ -74,13 +77,14 @@ define([
 					question : $("#txtGeneralQuestion").val(),
 					photo : ''
 				};
+				var task1 = undefined;
 				if (!Utilities.isEmpties(companyData, ['photo'])) {
 					console.log('saving');
-					var task1=ConfigController.saveOrUpdateCompany(companyData);
-                }else{
-                	var task1= $.Deferred();
-                  	task1.resolve();
-                }
+					task1 = ConfigController.saveOrUpdateCompany(companyData);
+				} else {
+					task1 = $.Deferred();
+					task1.resolve();
+				}
 
 				var configurationData = {};
 				for (var x = 1; x <= 4; x++) {
@@ -89,19 +93,23 @@ define([
 					configurationData['field' + x + 'DataType'] = this.model.get('field' + x + '_datatype');
 				}
 
-			var _this = this;	
-              var task2=ConfigController.saveOrUpdateForm(configurationData);
+				var _this = this;
+				var task2 = ConfigController.saveOrUpdateForm(configurationData);
 
 				var questionData = [];
 				_.each(this.questionViewList, function (view) {
 					questionData.push(view.getData());
 				});
 
-				var task3=ConfigController.saveOrUpdateQuestions(questionData);
-              
-              $.when(task1,task2,task3).then(function(){
-              	_this.$el.find('.txtMessage').html('saveconfig');
-              });
+				var task3 = ConfigController.saveOrUpdateQuestions(questionData);
+
+				$.when(task1, task2, task3).then(function () {
+					_this.$el.find('.txtMessage').html('Save Config, page will be refresh');
+					setTimeout(function(){
+						window.location.reload();
+					},2000);
+					
+				});
 			}
 		});
 

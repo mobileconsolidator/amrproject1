@@ -96,6 +96,35 @@ define([], function () {
 			});
 			return invoke;
 		},
+		onInsert2 : function(){
+			
+		},
+		insert2 : function (query, isTrigger) {
+			var _this = this;
+			var onSuccess = function (transaction, result) {
+				if (result != null || result.rows != null) {
+					if(isTrigger){
+					_this.onInsert2({
+						status : true,
+						id : result.insertId
+					})
+					}
+				} else {
+					if(isTrigger){
+					_this.onInsert2({
+						status : true,
+						id : result.insertId
+					})
+					}
+				}
+			}
+			var onError = function () {};
+
+			_this.db.transaction(function (tx) {
+				tx.executeSql(query, [], onSuccess, onError);
+
+			}, _this.events.onError, _this.events.onSuccess);
+		},
 		query : function (query) {
 			var invoke = $.Deferred();
 			var initInvoke = undefined;

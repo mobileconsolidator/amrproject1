@@ -3,15 +3,23 @@ define([
 	], function (DatabaseManager) {
 	var ConfigController = {
 		saveOrUpdateCompany : function (data) {
-			DatabaseManager.query("DELETE FROM company_configuration").done(function (response) {
-				DatabaseManager.query('INSERT INTO company_configuration(company_name,company_logo,general_question_survey) VALUES("' + data.companyName + '","' + data.photo + '","' + data.question + '")');
+			var invoke = $.Deferred();
+			var task1 = undefined;
+			var task2 = undefined;
+			task1 = DatabaseManager.query("DELETE FROM company_configuration")
+			task1.done(function (response) {
+				task2 = DatabaseManager.query('INSERT INTO company_configuration(company_name,company_logo,general_question_survey) VALUES("' + data.companyName + '","' + data.photo + '","' + data.question + '")');
 			});
-
+			$.when(task1,task2).then(function(){
+				invoke.resolve(true);
+			});
+			return invoke;
 		},
 		saveOrUpdateForm : function (data) {
-			console.log(data);
-			DatabaseManager.query("DELETE FROM form_configuration").done(function (response) {
-				DatabaseManager.query('INSERT INTO form_configuration(' +
+			var invoke = $.Deferred();
+			var task2 = undefined;
+			var task1 = DatabaseManager.query("DELETE FROM form_configuration").done(function (response) {
+				 task2 = DatabaseManager.query('INSERT INTO form_configuration(' +
 					'field1_caption,field1_sequence,field1_datatype,' +
 					'field2_caption,field2_sequence,field2_datatype,' +
 					'field3_caption,field3_sequence,field3_datatype,' +
@@ -24,6 +32,10 @@ define([
 					')');
 
 			});
+			$.when(task1,task2).then(function(){
+				invoke.resolve(true);
+			});
+			return invoke;
 		},
 		saveOrUpdateQuestions : function (data) {
 			DatabaseManager.query('DELETE FROM questions').done(function () {
