@@ -1,11 +1,9 @@
 define([
 'marionette',
-'view/CategoryList',
-'app/data',
 "view/login",
-"app/controller/configController",
+'view/AssessmentView',
 "view/ConfigView"
-],function(marionette,CategoryList,data,LoginView,ConfigController,ConfigView){
+],function(marionette,LoginView,AssessmentView,ConfigView){
 	App = new Backbone.Marionette.Application();
 	window.App = App;
 	App.isLogin = false;
@@ -15,7 +13,6 @@ define([
 	
 	App.addInitializer(function(options){
 	  
-	  this.categoryList = new CategoryList();
 	  
 	});
 	
@@ -26,12 +23,8 @@ define([
 	}
 	
 	App.showMain = function(){
-		var _this = this;
-		ConfigController.getQuestions().done(function(response){
-			_this.categoryList.setCollection(new Backbone.Collection(response));
-			_this.mainRegion.show(_this.categoryList);
-		});
-		
+		var assessmentView = new AssessmentView();
+      this.mainRegion.show(assessmentView);
 	}
 	
 	

@@ -76,8 +76,11 @@ define([
 				};
 				if (!Utilities.isEmpties(companyData, ['photo'])) {
 					console.log('saving');
-					ConfigController.saveOrUpdateCompany(companyData);
-				}
+					var task1=ConfigController.saveOrUpdateCompany(companyData);
+                }else{
+                	var task1= $.Deferred();
+                  	task1.resolve();
+                }
 
 				var configurationData = {};
 				for (var x = 1; x <= 4; x++) {
@@ -86,14 +89,19 @@ define([
 					configurationData['field' + x + 'DataType'] = this.model.get('field' + x + '_datatype');
 				}
 
-				ConfigController.saveOrUpdateForm(configurationData);
+			var _this = this;	
+              var task2=ConfigController.saveOrUpdateForm(configurationData);
 
 				var questionData = [];
 				_.each(this.questionViewList, function (view) {
 					questionData.push(view.getData());
 				});
 
-				ConfigController.saveOrUpdateQuestions(questionData);
+				var task3=ConfigController.saveOrUpdateQuestions(questionData);
+              
+              $.when(task1,task2,task3).then(function(){
+              	_this.$el.find('.txtMessage').html('saveconfig');
+              });
 			}
 		});
 
