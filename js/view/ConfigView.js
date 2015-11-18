@@ -105,9 +105,7 @@ define([
 
 				$.when(task1, task2, task3).then(function () {
 					_this.$el.find('.txtMessage').html('Save Config, page will be refresh');
-					setTimeout(function(){
-						window.location.reload();
-					},2000);
+					window.location.reload();
 					
 				});
 			}
