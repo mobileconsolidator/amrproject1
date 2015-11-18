@@ -1,44 +1,40 @@
 define([
-'marionette',
-"view/login",
-'view/AssessmentView',
-"view/ConfigView"
-],function(marionette,LoginView,AssessmentView,ConfigView){
+		'marionette',
+		"view/login",
+		'view/AssessmentView',
+		"view/ConfigView",
+		"app/controller/ConfigController"
+	], function (marionette, LoginView, AssessmentView, ConfigView, ConfigController) {
 	App = new Backbone.Marionette.Application();
 	window.App = App;
 	App.isLogin = false;
 	App.addRegions({
-	  mainRegion: "content"
+		mainRegion : "content"
 	});
-	
-	App.addInitializer(function(options){
-	  
-	  
-	});
-	
-	
-	App.setContentView = function(panel){
+
+	App.addInitializer(function (options) {});
+
+	App.setContentView = function (panel) {
 		this.mainRegion.reset();
 		this.mainRegion.show(panel);
 	}
-	
-	App.showMain = function(){
+
+	App.showMain = function () {
 		var assessmentView = new AssessmentView();
-      this.mainRegion.show(assessmentView);
+		this.mainRegion.show(assessmentView);
 	}
-	
-	
-	$(document).ready(function(){
-	   App.start();
-	  
-	   ConfigController.hasQuestions().done(function(response){
-		   console.log(response);
-		   if(response){
-			   App.showMain();
-		   }else{
-			   var configView = new ConfigView();
-			   App.setContentView(configView);
-		   }
-	   });
+
+	$(document).ready(function () {
+		App.start();
+
+		ConfigController.hasQuestions().done(function (response) {
+			console.log(response);
+			if (response) {
+				App.showMain();
+			} else {
+				var configView = new ConfigView();
+				App.setContentView(configView);
+			}
+		});
 	});
 });

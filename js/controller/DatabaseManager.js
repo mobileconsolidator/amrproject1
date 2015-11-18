@@ -38,7 +38,7 @@ define([], function () {
 					'field4_caption TEXT , field4_sequence INTEGER NOT NULL,field4_datatype INTEGER NOT NULL)', [], _this.events.onNull, _this.events.onError);
 				tx.executeSql('CREATE TABLE IF NOT EXISTS respondent_information(survey_date TEXT NOT NULL,field1_detail TEXT NOT NULL,field2_detail TEXT NOT NULL,' +
 					'field3_detail TEXT NOT NULL,field4_detail TEXT NOT NULL, general_question_response TEXT NOT NULL, general_question_comments TEXT NOT NULL)', [], _this.events.onNull, _this.events.onError);
-				tx.executeSql('CREATE TABLE IF NOT EXISTS respondent_input(respondent_id TEXT NOT NULL,question_id TEXT NOT NULL,answer_id TEXT NOT NULL)', [], _this.events.onNull, _this.events.onError);
+				tx.executeSql('CREATE TABLE IF NOT EXISTS respondent_input(respondent_id TEXT NOT NULL,question_id TEXT NOT NULL,answer_id TEXT NOT NULL,score TEXT NOT NULL)', [], _this.events.onNull, _this.events.onError);
 			}, this.events.onError, this.events.onSuccess);
 			this.query('SELECT * FROM users').done(function (response) {
 				if (response.data.length == 0) {

@@ -6,10 +6,17 @@ define([
     initialize:function(options){
       this.model = options.model; 
     },
+	events:{
+		"change input" : "textChanged"
+	},
+	textChanged : function(el){
+		this.trigger(SingleView.CHANGED, { num : this.model.get('num'), value :$(el.currentTarget).val()});
+	},
     onRender:function(){
     	var template = _.template(this.template);
       this.$el.html(template(this.model.attributes));
     }
   });
+  SingleView.CHANGED = "text:changed";
   return SingleView;
 });

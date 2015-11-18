@@ -30,6 +30,11 @@ define([
 		},
 		displayMessage: function(id,message){
 			$(id).empty().append(message);
+		},
+		getDate: function(format){
+			var date = new Date();
+			
+			return (date.getMonth() + 1) + "-" + date.getDate() +"-"+ (1900 + date.getYear());
 		}
 	}
 	

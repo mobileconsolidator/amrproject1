@@ -98,12 +98,12 @@ define([
 						var question = {};
 						question.caption = d.caption;
 						question.items = [];
-						var task = DatabaseManager.query('SELECT * FROM answers WHERE question_id='+d.questionId);
+						var task = DatabaseManager.query('SELECT rowId as answerId, caption as caption FROM answers WHERE question_id='+d.questionId);
 						tasks.push(task);
 						task.done(function(result){
 							if(result.status){
 								_.each(result.data,function(a){
-									question.items.push({ caption : a.caption });
+									question.items.push({ questionId : d.questionId,answerId : a.answerId, caption : a.caption });
 								});
 								data.push(question);
 							}
