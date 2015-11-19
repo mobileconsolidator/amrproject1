@@ -1,10 +1,7 @@
 define([
 		'marionette',
-		"view/login",
-		'view/AssessmentView',
-		"view/ConfigView",
-		"app/controller/ConfigController"
-	], function (marionette, LoginView, AssessmentView, ConfigView, ConfigController) {
+		"view/login"
+	], function (marionette, LoginView) {
 	App = new Backbone.Marionette.Application();
 	window.App = App;
 	App.isLogin = false;
@@ -23,18 +20,14 @@ define([
 		var assessmentView = new AssessmentView();
 		this.mainRegion.show(assessmentView);
 	}
+    
+    App.showLogin = function(){
+    	var loginView = new LoginView();
+      this.mainRegion.show(loginView);
+    }
 
 	$(document).ready(function () {
 		App.start();
-		
-		ConfigController.hasQuestions().done(function (response) {
-			console.log(response);
-			if (response) {
-				App.showMain();
-			} else {
-				var configView = new ConfigView();
-				App.setContentView(configView);
-			}
-		});
+		App.showLogin();
 	});
 });

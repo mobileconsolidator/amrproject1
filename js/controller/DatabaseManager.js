@@ -31,7 +31,7 @@ define([], function () {
 			var _this = this;
 			this.db = openDatabase(this.shortName, this.version, this.displayName, this.maxSize);
 			this.db.transaction(function (tx) {
-				tx.executeSql('CREATE TABLE IF NOT EXISTS users(email TEXT NOT NULL PRIMARY KEY, Password TEXT NOT NULL)', [], _this.events.onNull, _this.events.onError);
+				tx.executeSql('CREATE TABLE IF NOT EXISTS users(email TEXT NOT NULL PRIMARY KEY, Password TEXT NOT NULL,first_login INTEGER NOT NULL,change_password INTEGER NOT NULL)', [], _this.events.onNull, _this.events.onError);
 				tx.executeSql('CREATE TABLE IF NOT EXISTS company_configuration(company_name TEXT NOT NULL PRIMARY KEY, company_logo TEXT NOT NULL,general_question_survey TEXT NOT NULL)', [], _this.events.onNull, _this.events.onError);
 				tx.executeSql('CREATE TABLE IF NOT EXISTS questions(caption TEXT NOT NULL)', [], _this.events.onNull, _this.events.onError);
 				tx.executeSql('CREATE TABLE IF NOT EXISTS answers(question_id TEXT , caption TEXT NOT NULL)', [], _this.events.onNull, _this.events.onError);
@@ -45,7 +45,7 @@ define([], function () {
 			}, this.events.onError, this.events.onSuccess);
 			this.query('SELECT * FROM users').done(function (response) {
 				if (response.data.length == 0) {
-					_this.query('INSERT INTO users(email,password) VALUES("admin","admin")');
+					_this.query('INSERT INTO users(email,password,first_login,change_password) VALUES("admin","admin",1,1)');
 
 				}
 				invoke.resolve();

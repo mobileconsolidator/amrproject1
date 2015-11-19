@@ -17,17 +17,9 @@ define([
 		},
 		isLoginDatabase: function(email,password){
 			var invoke = $.Deferred();
-			DatabaseManager.query('SELECT * FROM user WHERE email="' + email+'" AND password="' + password + '"').done(function(response){
-				if(response.status){
-					console.log(response.data.length);
-					if(response.data.length > 0){
-						invoke.resolve(true);
-					}else{
-						invoke.resolve(false);
-					}
-				}else{
-					invoke.resolve(false);
-				}
+			DatabaseManager.query('SELECT rowid as userId, email as email, password as password, first_login as isFirstLogin, change_password as isChangePassword FROM users WHERE email="' + email+'" AND password="' + password + '"').done(function(response){
+          
+              invoke.resolve(response);
 			});
 			return invoke;
 		}
