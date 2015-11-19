@@ -139,9 +139,6 @@ define([
 				var tasks = [];
 				if (response.status) {
 					_.each(response.data, function (d,t,v) {
-						alert("d" + d);
-						alert("t" + t);
-						alert("v" + v);
 						var question = {};
 						question.caption = d.caption;
 						question.items = [];

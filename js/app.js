@@ -26,7 +26,7 @@ define([
 
 	$(document).ready(function () {
 		App.start();
-
+		
 		ConfigController.hasQuestions().done(function (response) {
 			console.log(response);
 			if (response) {

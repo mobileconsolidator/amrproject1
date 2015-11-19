@@ -147,9 +147,9 @@ define([], function () {
 				var onSuccess = function (transaction, result) {
 					if (result != null || result.rows != null) {
 						var data = [];
-						$.each(result.rows,function(i){
+						for(var i=0;i<result.rows.length;i++){
 							data.push(result.rows.item(i));
-						});
+						}
 						
 						invoke.resolve({
 							status : true,
