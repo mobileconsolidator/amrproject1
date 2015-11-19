@@ -35,6 +35,9 @@ define([
 			var date = new Date();
 			
 			return (date.getMonth() + 1) + "-" + date.getDate() +"-"+ (1900 + date.getYear());
+		},
+		isMatch:function(value1,value2){
+			return value1 == value2;
 		}
 	}
 	

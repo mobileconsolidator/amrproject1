@@ -1,11 +1,12 @@
 define([
 		"text!templates/config.html",
 		"app/controller/ConfigController",
+		"app/controller/LoginController",
 		"app/util/util",
 		"view/FieldView",
 		"view/QuestionView",
 		"marionette"
-	], function (tmpl, ConfigController, Utilities, FieldView, QuestionView) {
+	], function (tmpl, ConfigController, LoginController,Utilities, FieldView, QuestionView) {
 
 	var ConfigView = Backbone.Marionette.ItemView.extend({
 			template : tmpl,
@@ -14,6 +15,7 @@ define([
 				this.model = new Backbone.Model();
 				this.model.set('company_name', '');
 				this.model.set('general_question_survey', '');
+				this.userModel = options.model;
 				this.questionViewList = [];
 			},
 
@@ -102,10 +104,12 @@ define([
 				});
 
 				var task3 = ConfigController.saveOrUpdateQuestions(questionData);
+				
+				var task4 = LoginController.updateFirstLogin(this.userModel.get('userId'));
 
 				$.when(task1, task2, task3).then(function () {
 					_this.$el.find('.txtMessage').html('Save Config, page will be refresh');
-					window.location.reload();
+					App.panel.showAssessmentView();
 					
 				});
 			}

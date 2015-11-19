@@ -50,7 +50,6 @@ define([], function () {
 				}
 				invoke.resolve();
 			});
-			console.log(invoke);
 			return invoke;
 		},
 		isEmpty : function (query) {
@@ -137,7 +136,6 @@ define([], function () {
 				initInvoke = this.init();
 			} else {
 				initInvoke = $.Deferred();
-				console.log(initInvoke);
 				
 				initInvoke.resolve();
 			}

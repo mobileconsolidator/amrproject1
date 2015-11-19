@@ -22,6 +22,20 @@ define([
               invoke.resolve(response);
 			});
 			return invoke;
+		},
+		changePassword : function(userId,password){
+			var invoke = $.Deferred();
+			DatabaseManager.query('UPDATE users set password="'+password+'",change_password=0 WHERe rowid=' + userId).done(function(response){
+				invoke.resolve(response);
+			})
+			return invoke;
+		},
+		updateFirstLogin: function(userId){
+			var invoke = $.Deferred();
+			DatabaseManager.query('UPDATE users set first_login=0 WHERe rowid=' + userId).done(function(response){
+				invoke.resolve(response);
+			})
+			return invoke;
 		}
 		
 	}
