@@ -19,11 +19,14 @@ define([], function () {
 		},
 		init : function () {
 			var invoke = $.Deferred();
+			console.log(invoke);
 			if (!window.openDatabase) {
 				this.events.onError({
 					msg : 'Database not supported'
 				});
-				return;
+				alert('Database not supported');
+				invoke.reject();
+				return invoke;
 			}
 			var _this = this;
 			this.db = openDatabase(this.shortName, this.version, this.displayName, this.maxSize);
@@ -47,6 +50,7 @@ define([], function () {
 				}
 				invoke.resolve();
 			});
+			console.log(invoke);
 			return invoke;
 		},
 		isEmpty : function (query) {
@@ -129,9 +133,12 @@ define([], function () {
 			var invoke = $.Deferred();
 			var initInvoke = undefined;
 			if (this.db == undefined) {
+				console.log('empty db');
 				initInvoke = this.init();
 			} else {
 				initInvoke = $.Deferred();
+				console.log(initInvoke);
+				
 				initInvoke.resolve();
 			}
 			var _this = this;
@@ -139,9 +146,14 @@ define([], function () {
 			initInvoke.done(function () {
 				var onSuccess = function (transaction, result) {
 					if (result != null || result.rows != null) {
+						var data = [];
+						$.each(result.rows,function(i){
+							data.push(result.rows.item(i));
+						});
+						
 						invoke.resolve({
 							status : true,
-							data : result.rows
+							data : data
 						});
 					} else {
 						invoke.resole({
