@@ -37,7 +37,7 @@ define([
 			})
 			return invoke;
 		},
-      getAllUser:function(){
+      getAllUsers:function(){
       	var invoke = $.Deferred();
         DatabaseManager.query('SELECT * FROM users').done(function(response){
         	invoke.resolve(response);

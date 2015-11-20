@@ -11,17 +11,21 @@ define([
 	  onRender: function(){
 		  var template = _.template(this.template);
 		  this.$el.html(template(this.model.attributes));
-		  console.log(this.model);
 		  var _this = this;
 		  setTimeout(function(){
-			  $(".star-rating").raty({
+			  console.log(_this.model);
+			  
+			  _this.$el.find(".star-rating").raty({
 				  click : function(score){
-				  _this.trigger(ListItemView.STAR_RATING_CLICK, { score : score , answerId : _this.model.get('answerId'), questionId : _this.model.get('questionId')});
+					  _this.setScore(score);
 				  }
 			  });
 		  },6);
 		  
 		  return this;
+	  },
+	  setScore: function(score){
+		  this.trigger(ListItemView.STAR_RATING_CLICK,{score : score, answerId : this.model.get('answerId'), questionId : this.model.get('questionId')});
 	  }
 	});
 	ListItemView.STAR_RATING_CLICK = "star:click";

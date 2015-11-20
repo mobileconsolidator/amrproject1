@@ -8,7 +8,9 @@ requirejs.config({
 		marionette : '../vendor/backbone/backbone.marionette',
 		backbone : '../vendor/backbone/backbone',
 		view : '../js/view',
-		jqueryui : '../vendor/jqueryui/jquery-ui.min'
+		jqueryui : '../vendor/jqueryui/jquery-ui.min',
+		slickgrid : '../vendor/slickgrid',
+		grid : '../vendor/slickgrid/slick.grid'
     },
 	shim:{
 		'raty':{
@@ -18,6 +20,11 @@ requirejs.config({
 		'bootstrap' :{
 			deps : ['jquery'],
 			exports : 'bootstrap'
+		},
+		
+		'grid' : {
+			deps : ['jquery','jqueryui','vendor/jquery.event.drag-2.2','slickgrid/slick.core'],
+			exports: 'slickgrid'
 		}
 	}
 });

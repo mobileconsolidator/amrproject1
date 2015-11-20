@@ -4,8 +4,9 @@ define([
 		'view/FormsView',
 		'app/controller/ConfigController',
 		"app/controller/AssessmentController",
+		"app/controller/ResultController",
 		'marionette'
-	], function (tmpl, CategoryList, FormsView, ConfigController, AssessmentController) {
+	], function (tmpl, CategoryList, FormsView, ConfigController, AssessmentController,ResultController) {
 	var AssessmentView = Backbone.Marionette.ItemView.extend({
 			template : tmpl,
 			scoreList : [],
@@ -15,6 +16,7 @@ define([
 			},
 			addScore : function(response){
 				this.scoreList.push(response);
+				console.log(this.scoreList);
 			},
 			onRender : function () {
 				var template = _.template(this.template);
@@ -39,11 +41,11 @@ define([
 				formData.comments = comments;
 				console.log(formData);
 				AssessmentController.saveRespondentInformation(formData);
+				this.render();
 			},
 			showExport : function(){
 				ResultController.getAllResult().done(function(response){
-					console.log(response);
-					App.panel.showResultView(response);
+					App.panel.showReportView(response);
 				});
 			}
 		});

@@ -14,6 +14,7 @@ define([
 	  },
 	  initialize: function(options){
 		  this.collection = options.collection;
+		  console.log(this.collection);
 	  }
 	});
 	ListItemViews.STAR_CLICK = "star:click";

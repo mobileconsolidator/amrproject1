@@ -1,44 +1,53 @@
 define([
-	'app/controller/LoginController',
-  	'app/controller/AssessmentController',
-  'app/controller/ConfigController'
-],function(){
-  var ResultController ={
-    getAllResult:function(){
-    	var users=undefined;
-      	var respondentInformations=undefined;
-      	var respondentInputs=undefined;
-      	var answers = undefined;
-      	var task1=LoginController.getAllUsers();
-      	var task2=AssessmentController.getAllRespondentInformation();
-      	var task3=AssessmentController.getAllRespondentInput();
-      task1.done(function(response){
-      	users=response.data;
-      });
-      task2.done(function(response){
-      	respondentInputs = response.data;
-      });
-      task3.done(function(response){
-      	respondentInformations = response.data;
-      });
-      
-      $.when(task1,task2,task3).then(function(){
-        var listData = [];
-        _.each(respondentInformations,function(ri){
-          var data = {};
-          data.answers = [];
-          var userInputs = _.findWhere(respondentInputs,{userId:ri.userId});
-          _.each(answers,function(answer){
-            var input = _.findWhere(userInputs,{answerId : answer.answerId});
-            var abanswer = $.extend(true,{},answer);
-          	abanswer.input = input;
-            ri.abnswer = abanswer;
-          });
-        });
-        invoke.resolve(listData);
-      });
-    }
-  };
-  
-  return ResultController;
+		'app/controller/LoginController',
+		'app/controller/AssessmentController',
+		'app/controller/ConfigController'
+	], function (LoginController, AssessmentController, ConfigController) {
+	var ResultController = {
+		getAllResult : function () {
+			var invoke = $.Deferred();
+			var users = undefined;
+			var respondentInformations = undefined;
+			var respondentInputs = undefined;
+			var answers = undefined;
+			var task1 = AssessmentController.getAllRespondentInformation();
+			var task2 = AssessmentController.getAllRespondentInput();
+			var task3 = ConfigController.getAllAnswers();
+			task1.done(function (response) {
+				respondentInformations = response;
+			});
+			task2.done(function (response) {
+				respondentInputs = response;
+			});
+			task3.done(function (response) {
+				answers = response;
+			});
+
+			$.when(task1, task2, task3).then(function () {
+				var listData = [];
+				_.each(respondentInformations, function (ri) {
+					var data = {};
+					ri.answers = [];
+					var userInputs = _.where(respondentInputs, {
+							respondent_id : ri.respondentId + ""
+						});
+					_.each(userInputs, function (userInput) {
+						var input = _.findWhere(answers, {
+								answerId : parseInt(userInput.answer_id)
+							});
+						var tinput = $.extend(true,{},input);
+						tinput.userInput = userInput;
+						ri.answers.push(tinput);
+					});
+
+					listData.push(ri);
+				});
+				invoke.resolve(listData);
+			});
+
+			return invoke;
+		}
+	};
+
+	return ResultController;
 });

@@ -115,7 +115,7 @@ define([
 			DatabaseManager.query('SELECT * FROM form_configuration').done(function (response) {
 				if (response.status) {
 					invoke.resolve(response.data);
-				} else {}
+				} 
 			});
 			return invoke;
 		},
@@ -169,7 +169,7 @@ define([
       getAllAnswers:function(){
       	var invoke= $.Deferred();
         
-        DatabaseManager.query('SELECT * FROM answers').done(function(response){
+        DatabaseManager.query('SELECT rowid as answerId,* FROM answers').done(function(response){
         	invoke.resolve(response.data);
         });
         return invoke;

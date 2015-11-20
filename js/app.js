@@ -4,8 +4,8 @@ define([
 		"view/AssessmentView",
 		"view/ChangePasswordView",
 		"view/ConfigView",
-		"view/ExportView"
-	], function (marionette, LoginView,AssessmentView,ChangePasswordView,ConfigView,ExportView) {
+		"view/ReportView"
+	], function (marionette, LoginView,AssessmentView,ChangePasswordView,ConfigView,ReportView) {
 	App = new Backbone.Marionette.Application();
 	window.App = App;
 	App.isLogin = false;
@@ -36,9 +36,9 @@ define([
 			var loginView = new LoginView();
 			App.mainRegion.show(loginView);
 		},
-		showExportView : function(){
-			var exportView = new ExportView();
-			App.mainRegion.show(exportView);
+		showReportView : function(response){
+			var reportView = new ReportView({data : response});
+			App.mainRegion.show(reportView);
 		}
 		
 	}

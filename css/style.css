@@ -8,3 +8,6 @@
 textarea{
 width:100%;
 }
+.slick-header-column{
+	height:30px!important;
+}
