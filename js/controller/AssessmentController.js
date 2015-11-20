@@ -22,6 +22,21 @@ define([
 				
 			});
        },
+    getAllRespondentInformation:function(){
+    	var invoke = $.Deferred();
+      DatabaseManager.query('SELECT * FROM respondent_information').done(function(response){
+      	invoke.resolve(response);
+      });
+      return invoke;
+    },
+    getAllRespondentInput:function(){
+    
+      	var invoke = $.Deferred();
+        DatabaseManager.query('SELECT * FROM respondent_input').done(function(response){
+        	invoke.resolve(response);
+        });
+        return invoke;
+    }
     
                         
   };

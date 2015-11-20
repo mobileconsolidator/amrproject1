@@ -166,6 +166,14 @@ define([
 			});
 			return invoke;
 		},
+      getAllAnswers:function(){
+      	var invoke= $.Deferred();
+        
+        DatabaseManager.query('SELECT * FROM answers').done(function(response){
+        	invoke.resolve(response.data);
+        });
+        return invoke;
+      },
 
 		hasQuestions : function () {
 			var invoke = $.Deferred();

@@ -36,7 +36,22 @@ define([
 				invoke.resolve(response);
 			})
 			return invoke;
-		}
+		},
+      getAllUser:function(){
+      	var invoke = $.Deferred();
+        DatabaseManager.query('SELECT * FROM users').done(function(response){
+        	invoke.resolve(response);
+        });
+        return invoke;
+      },
+      getUserById:function(userId){
+      
+      	var invoke = $.Deferred();
+        DatabaseManager.query('SELECT * FROM users WHERE rowid='+userId).done(function(response){
+        	invoke.resolve(response);
+        });
+        return invoke;
+      }
 		
 	}
 	return LoginController;
