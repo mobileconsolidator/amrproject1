@@ -10,7 +10,8 @@ define([
 			template : tmpl,
 			scoreList : [],
 			events : {
-				"click #btnSubmit" : "saveAssessment"
+				"click #btnSubmit" : "saveAssessment",
+				"click #btnExport" : "showExport"
 			},
 			addScore : function(response){
 				this.scoreList.push(response);
@@ -39,6 +40,12 @@ define([
 				console.log(formData);
 				AssessmentController.saveRespondentInformation(formData);
 			},
+			showExport : function(){
+				ResultController.getAllResult().done(function(response){
+					console.log(response);
+					App.panel.showResultView(response);
+				});
+			}
 		});
 
 	return AssessmentView;
