@@ -24,6 +24,7 @@ define([
 					for (var x = 1; x <= 4; x++) {
 						var label = data['field' + x + '_caption'];
 						if(label != 'undefined'){
+							_this.formData['field' + x+'_detail'] = "";
 							var ob = {
 								num : x,
 								label : label,
@@ -39,6 +40,7 @@ define([
 							singleView.render();
 							$('.single-view').append(singleView.el);
 						}
+						
 					};
 				});
 			}

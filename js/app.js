@@ -4,8 +4,9 @@ define([
 		"view/AssessmentView",
 		"view/ChangePasswordView",
 		"view/ConfigView",
-		"view/ReportView"
-	], function (marionette, LoginView,AssessmentView,ChangePasswordView,ConfigView,ReportView) {
+		"view/ReportView",
+		"app/ApplicationRouter"
+	], function (marionette, LoginView,AssessmentView,ChangePasswordView,ConfigView,ReportView,ApplicationRouter) {
 	App = new Backbone.Marionette.Application();
 	window.App = App;
 	App.isLogin = false;
@@ -19,17 +20,18 @@ define([
 		this.mainRegion.reset();
 		this.mainRegion.show(panel);
 	}
+	App.user = undefined;
 	App.panel = {
 		showAssessmentView: function(){
 			var assessmentView = new AssessmentView();
 			App.mainRegion.show(assessmentView);
 		},
-		showChangePasswordView: function(model){
-			var changePasswordView = new ChangePasswordView({model : model});
+		showChangePasswordView: function(){
+			var changePasswordView = new ChangePasswordView({model : App.user});
 			App.mainRegion.show(changePasswordView);
 		},
-		showConfigView: function(model){
-			var configView= new ConfigView({model : model});
+		showConfigView: function(){
+			var configView= new ConfigView({model : App.user});
 			App.mainRegion.show(configView);
 		},
 		showLoginView: function(){
@@ -42,9 +44,11 @@ define([
 		}
 		
 	}
+	
+	
+	
 	$(document).ready(function () {
-		App.start();
-		//App.panel.showLoginView();
-		App.panel.showAssessmentView();
+		new ApplicationRouter();
+		App.start();		
 	});
 });

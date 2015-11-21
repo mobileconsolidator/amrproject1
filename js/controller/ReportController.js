@@ -3,7 +3,7 @@ define([
 		'app/controller/AssessmentController',
 		'app/controller/ConfigController'
 	], function (LoginController, AssessmentController, ConfigController) {
-	var ResultController = {
+	var ReportController = {
 		getAllResult : function () {
 			var invoke = $.Deferred();
 			var users = undefined;
@@ -49,5 +49,5 @@ define([
 		}
 	};
 
-	return ResultController;
+	return ReportController;
 });

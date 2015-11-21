@@ -12,9 +12,7 @@ define([
 		  var template = _.template(this.template);
 		  this.$el.html(template(this.model.attributes));
 		  var _this = this;
-		  setTimeout(function(){
-			  console.log(_this.model);
-			  
+		  setTimeout(function(){	  
 			  _this.$el.find(".star-rating").raty({
 				  click : function(score){
 					  _this.setScore(score);

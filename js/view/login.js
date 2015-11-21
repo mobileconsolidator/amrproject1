@@ -30,13 +30,14 @@ define([
 						if (response.data.length > 0) {
 							var model = response.data[0];
 							var bmodel = new Backbone.Model(model);
+							App.user = bmodel;
 							if (model.isChangePassword) {
-								App.panel.showChangePasswordView(bmodel);
+								Backbone.history.navigate("changepassword",{trigger : true});
 							} else {
 								if (model.isFirstLogin) {
-									App.panel.showConfigView(bmodel);
+									Backbone.history.navigate("config",{trigger : true});
 								} else {
-									App.panel.showAssessmentView();
+									Backbone.history.navigate("assessment",{trigger : true});
 								}
 							}
 						} else {

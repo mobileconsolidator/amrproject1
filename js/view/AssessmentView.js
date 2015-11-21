@@ -4,15 +4,20 @@ define([
 		'view/FormsView',
 		'app/controller/ConfigController',
 		"app/controller/AssessmentController",
-		"app/controller/ResultController",
+		"app/controller/ReportController",
+		"app/util/util",
+		"view/component/Dialog",
 		'marionette'
-	], function (tmpl, CategoryList, FormsView, ConfigController, AssessmentController,ResultController) {
+	], function (tmpl, CategoryList, FormsView, ConfigController, AssessmentController,ReportController,Utilities,Dialog) {
 	var AssessmentView = Backbone.Marionette.ItemView.extend({
 			template : tmpl,
 			scoreList : [],
 			events : {
 				"click #btnSubmit" : "saveAssessment",
 				"click #btnExport" : "showExport"
+			},
+			initialize: function(){
+				this.dialog = new Dialog();
 			},
 			addScore : function(response){
 				this.scoreList.push(response);
@@ -40,13 +45,32 @@ define([
 				formData.scoreList = this.scoreList;
 				formData.comments = comments;
 				console.log(formData);
-				AssessmentController.saveRespondentInformation(formData);
-				this.render();
+				var isValid = true;
+				_.each(formData,function(v, l){
+					if(l.indexOf('field') >=0){
+						if(Utilities.isEmpty(v)){
+							isValid = false;
+							return;
+						}
+					}
+				});
+				var _this = this;
+				if(isValid){
+					if(formData.scoreList.length == 0){
+						this.dialog.showMessage('Empty Rating','Kindly rate at least one');
+					}else{
+						AssessmentController.saveRespondentInformation(formData);
+						this.render();
+					}
+				}else{
+					this.dialog.showMessage('Empty Value','Please enter value in form').done(function(){
+						$('input:text').filter(function() { return $(this).val() == ""; }).focus();
+					});
+				}
+				
 			},
 			showExport : function(){
-				ResultController.getAllResult().done(function(response){
-					App.panel.showReportView(response);
-				});
+				Backbone.history.navigate("#report",{trigger : true})
 			}
 		});
 
