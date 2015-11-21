@@ -19,16 +19,23 @@ define([
 				var _this = this;
 				ConfigController.getFormConfiguration().done(function (response) {
 					console.log(response);
-					data = response['0'];
-					
+					var data = response['0'];
+					var clazzez= ['pull-left','pull-right'];
+					var index = 0;
 					for (var x = 1; x <= 4; x++) {
 						var label = data['field' + x + '_caption'];
 						if(label != 'undefined'){
 							_this.formData['field' + x+'_detail'] = "";
+							if((x % 2)==0){
+								index = 1;
+							}else{
+								index = 0;
+							}
 							var ob = {
 								num : x,
 								label : label,
-								value: ''
+								value: '',
+								clazz : clazzez[index]
 							}
 							var singleView = new SingleView({
 									model : new Backbone.Model(ob)

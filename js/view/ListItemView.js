@@ -13,11 +13,16 @@ define([
 		  this.$el.html(template(this.model.attributes));
 		  var _this = this;
 		  setTimeout(function(){	  
-			  _this.$el.find(".star-rating").raty({
-				  click : function(score){
-					  _this.setScore(score);
-				  }
-			  });
+			  _this.$el.find(".slider").slider({
+				value : 0,
+				min : 0,
+				max : 5,
+				step: 1,
+				slide : function(event,ui){
+					console.log(ui.value);
+					_this.setScore(ui.value);
+				}
+			  })
 		  },6);
 		  
 		  return this;

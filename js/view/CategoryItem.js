@@ -8,7 +8,11 @@ define([
 	  template:tmpl,
 	  tagName : 'div',
 	  className: 'list-group',
-	  
+	  onBeforeRender: function(){
+		if(this.model.get('first')==undefined){
+			this.model.set('first',false);
+		}
+	  },
 	  onRender:function(){
 		  var template = _.template(this.template);
 		  if(this.model != undefined){

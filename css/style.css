@@ -11,3 +11,34 @@ width:100%;
 .slick-header-column{
 	height:30px!important;
 }
+.panel-body.single-view div{
+	width:49%;
+}
+#question .pull-item:first-child{
+	width:60%;
+}
+#question .pull-item:last-child{
+	width:40%;
+}
+
+nav{
+	width:41%;
+	margin-top:-7px;
+}
+nav ul{
+	width:100%;
+	margin:0!important;
+}
+nav li a{
+	margin-right:12.5%!important;
+}
+nav li:last-child a{
+	margin-right:0%!important;
+}
+
+.emoticons p{
+	margin:0 5em;
+}
+.emoticons p:before{
+	font-size:10em;
+}

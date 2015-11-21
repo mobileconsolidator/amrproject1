@@ -15,6 +15,7 @@ define([
     onRender:function(){
     	var template = _.template(this.template);
       this.$el.html(template(this.model.attributes));
+	  this.$el.addClass(this.model.get('clazz'))
     }
   });
   SingleView.CHANGED = "text:changed";

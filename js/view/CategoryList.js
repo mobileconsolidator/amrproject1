@@ -14,7 +14,11 @@ define([
 		  this.trigger(CategoryLists.STAR_CLICK,response);
 	  },
 	  setCollection: function(collection){
-		  this.collection  = collection;
+		  this.collection  = collection
+		  		  var model = this.collection.at(0);
+		  if(model != undefined){
+			model.set('first',true);
+		  }
 	  }
 	});
 	CategoryLists.STAR_CLICK = "star:click";

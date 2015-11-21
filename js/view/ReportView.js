@@ -14,7 +14,6 @@ define([
 				this.task2 = ConfigController.getFormConfiguration();
 				this.task1.done(function (response) {
 					_this.answers = response;
-					console.log(response);
 				});
 				this.task2.done(function (response) {
 					_this.forms = response;
@@ -37,11 +36,7 @@ define([
 						return dataContext[field+"_detail"];
 					}
 					var answerFormatter = function(row,value,c,field,dataContext){
-						console.log(field);
-						console.log(dataContext);
-						
 						var input = _.findWhere(dataContext.answers, { answerId : field.id});
-						console.log(input);
 						if(input == undefined){
 							return "";
 						}else{

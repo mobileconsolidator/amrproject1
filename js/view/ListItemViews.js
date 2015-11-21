@@ -1,7 +1,8 @@
 define([
+	'app/util/util',
 	"marionette",
 	"view/ListItemView",
-],function(marionette,ListItemView){
+],function(Utilities,marionette,ListItemView){
 	var ListItemViews = Backbone.Marionette.CollectionView.extend({
 	  tagName : 'ul',
 	  className: 'list-group',
@@ -14,6 +15,11 @@ define([
 	  },
 	  initialize: function(options){
 		  this.collection = options.collection;
+		  var x = 0;
+		  this.collection.each(function(model){
+			model.set('caption',Utilities.toLetterNum(x)+". "+ model.get('caption'));
+			x++;
+		  });
 	  }
 	});
 	ListItemViews.STAR_CLICK = "star:click";

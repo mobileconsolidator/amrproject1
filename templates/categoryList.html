@@ -1,5 +1,16 @@
 <div class="panel panel-default">
-  <div class="panel-heading"><%= caption %></div>
+  <div class="panel-heading"><%= caption %><% if(first){%>
+  <nav class='pull-right'>
+  <ul class="pagination">
+	<li><a href="#">0</a></li>
+    <li><a href="#">1</a></li>
+    <li><a href="#">2</a></li>
+    <li><a href="#">3</a></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">5</a></li>
+  </ul>
+</nav>
+<% } %></div>
   <div class="panel-body list-questions">
 
   </div>
