@@ -5,6 +5,7 @@ define([
 	var ApplicationRouter = Backbone.Router.extend({
 		routes :{
 			"" : "login",
+			"logout" : 'logout',
 			"assessment" : "assessment",
 			"config" : "config",
 			"changepassword" : "changePassword",
@@ -12,6 +13,10 @@ define([
 		},
 		login : function(){
 			App.panel.showLoginView();
+		},
+		logout : function(){
+			App.user = undefined;
+			Backbone.history.navigate("#", {trigger : true});
 		},
 		assessment : function(){
 			App.panel.showAssessmentView();

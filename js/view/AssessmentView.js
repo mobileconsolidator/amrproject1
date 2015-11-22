@@ -15,7 +15,6 @@ define([
 			scoreList : [],
 			events : {
 				"click #btnSubmit" : "saveAssessment",
-				"click #btnExport" : "showExport"
 			},
 			initialize: function(){
 				this.dialog = new Dialog();
@@ -83,9 +82,6 @@ define([
 					});
 				}
 				
-			},
-			showExport : function(){
-				Backbone.history.navigate("#report",{trigger : true})
 			}
 		});
 

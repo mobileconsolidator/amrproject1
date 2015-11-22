@@ -9,8 +9,21 @@ define([
 			tagName : 'div',
 			className : 'panel panel-default',
 			events : {
-				"click #btnSubmit" : "login"
+				"click #btnSubmit" : "login",
+				"keypress #txtEmail" : "focusPassword",
+				"keypress #txtPassword" : "doLogin"
 			},
+			focusPassword : function(e){
+				if(e.keyCode == 13){
+					$('#txtPassword').focus();
+				}
+			},
+			doLogin : function(e){
+				if(e.keyCode == 13){
+					this.login();
+				}
+			}
+			,
 			login : function () {
 
 				var password = $("#txtPassword").val();

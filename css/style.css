@@ -42,3 +42,7 @@ nav li:last-child a{
 .emoticons p:before{
 	font-size:10em;
 }
+header .company-name{
+	float:right;
+	width:99%;
+}

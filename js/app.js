@@ -5,42 +5,69 @@ define([
 		"view/ChangePasswordView",
 		"view/ConfigView",
 		"view/ReportView",
-		"app/ApplicationRouter"
-	], function (marionette, LoginView,AssessmentView,ChangePasswordView,ConfigView,ReportView,ApplicationRouter) {
+		"app/ApplicationRouter",
+		"view/HeaderView",
+		"app/controller/ConfigController"
+	], function (marionette, LoginView,AssessmentView,ChangePasswordView,ConfigView,ReportView,ApplicationRouter,HeaderView,ConfigController) {
 	App = new Backbone.Marionette.Application();
 	window.App = App;
 	App.isLogin = false;
 	App.addRegions({
+		headerRegion : "header",
 		mainRegion : "content"
 	});
 
-	App.addInitializer(function (options) {});
+	App.addInitializer(function (options) {
+		
+	});
 
 	App.setContentView = function (panel) {
+		console.log(App.user)
+		if(App.user == undefined){
+
+			$("header").empty();
+		}else{
+			App.showHeaderView();
+		}
 		this.mainRegion.reset();
 		this.mainRegion.show(panel);
 	}
+	App.showHeaderView = function(){
+		var _this = this;
+		ConfigController.getCompany().done(function(response){
+			var headerView = new HeaderView({model : new Backbone.Model(response[0])});
+			_this.headerRegion.show(headerView);
+		});
+	}
 	App.user = undefined;
 	App.panel = {
+		init: function(){
+			App.showHeaderView();
+		},
 		showAssessmentView: function(){
 			var assessmentView = new AssessmentView();
-			App.mainRegion.show(assessmentView);
+			App.setContentView(assessmentView);
 		},
 		showChangePasswordView: function(){
 			var changePasswordView = new ChangePasswordView({model : App.user});
-			App.mainRegion.show(changePasswordView);
+			App.setContentView(changePasswordView);
 		},
 		showConfigView: function(){
 			var configView= new ConfigView({model : App.user});
-			App.mainRegion.show(configView);
+			App.setContentView(configView);
 		},
 		showLoginView: function(){
+			
+			if(App.user != undefined){
+				Backbone.history.navigate("#assessment", {trigger : true});
+				return;
+			}
 			var loginView = new LoginView();
-			App.mainRegion.show(loginView);
+			App.setContentView(loginView);
 		},
 		showReportView : function(response){
 			var reportView = new ReportView({data : response});
-			App.mainRegion.show(reportView);
+			App.setContentView(reportView);
 		}
 		
 	}
