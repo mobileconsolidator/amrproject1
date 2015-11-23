@@ -9,7 +9,8 @@ define([
 			"assessment" : "assessment",
 			"config" : "config",
 			"changepassword" : "changePassword",
-			"report" : "report"
+			"report" : "report",
+			"summaryreport" : "summaryreport"
 		},
 		login : function(){
 			App.panel.showLoginView();
@@ -32,6 +33,11 @@ define([
 				App.panel.showReportView(response);
 			});
 			
+		},
+		summaryreport : function(){
+			ReportController.getAllSummaryReport().done(function(response){
+				App.panel.showSummaryReportView(response);
+			});
 		}
 		
 	});

@@ -5,10 +5,11 @@ define([
 		"view/ChangePasswordView",
 		"view/ConfigView",
 		"view/ReportView",
+		"view/SummaryReportView",
 		"app/ApplicationRouter",
 		"view/HeaderView",
 		"app/controller/ConfigController"
-	], function (marionette, LoginView,AssessmentView,ChangePasswordView,ConfigView,ReportView,ApplicationRouter,HeaderView,ConfigController) {
+	], function (marionette, LoginView,AssessmentView,ChangePasswordView,ConfigView,ReportView,SummaryReportView,ApplicationRouter,HeaderView,ConfigController) {
 	App = new Backbone.Marionette.Application();
 	window.App = App;
 	App.isLogin = false;
@@ -68,6 +69,10 @@ define([
 		showReportView : function(response){
 			var reportView = new ReportView({data : response});
 			App.setContentView(reportView);
+		},
+		showSummaryReportView : function(response){
+			var summaryReportView = new SummaryReportView({data : response});
+			App.setContentView(summaryReportView);
 		}
 		
 	}

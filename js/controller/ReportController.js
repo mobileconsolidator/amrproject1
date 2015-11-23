@@ -46,7 +46,107 @@ define([
 			});
 
 			return invoke;
-		}
+		},
+		getAllSummaryReport: function(){
+			var invoke = $.Deferred();
+			
+			var task1 = ConfigController.getCompany();
+			var task2 = AssessmentController.getAllRespondentInformation();
+			var task3 = ConfigController.getQuestions();
+			var task4 = ConfigController.getAllAnswers();
+			var task5 = AssessmentController.getAllRespondentInput();
+			var data = {};
+			task1.done(function(response){
+				data.surveyQuestion = response[0].general_question_survey;
+			});
+			task2.done(function(response){
+				data.surveyQuestionPass = 0;
+				data.surveyQuestionFail = 0;
+				
+				_.each(response,function(r){
+					if(r.general_question_response == 1){
+						data.surveyQuestionPass++;
+					}else{
+						data.surveyQuestionFail++;
+					}
+				});
+			});
+			
+			task3.done(function(response){
+				data.question = response;
+				
+			});
+			task4.done(function(response){
+				data.answers = response;
+				console.log(data.answers);
+			});
+			task5.done(function(response){
+				data.inputs = response;
+				console.log(data.inputs);
+			});
+			var _this = this;
+			$.when(task1,task2,task3,task4,task5).then(function(){
+				data.survey = [];
+				console.log(data.question);
+				_.each(data.question,function(r){
+					data.survey.push({
+						label : r.caption,
+						veryPoor : "",
+						poor : "",
+						good : "",
+						veryGood : "",
+						excellent : "",
+						isQuestion : true
+					});
+					_.each(r.items, function(a){
+						//var answer = _.findWhere(data.answers, {answerId:parseInt(a.answer_id)});
+						//console.log(answer);
+						var ax = _.findWhere(data.survey,{answerId : a.answerId, questionId : a.questionId});
+						console.log(ax);
+						if(ax == undefined){
+							ax = {
+								label : a.caption,
+								answerId : a.answerId,
+								questionId : a.questionId,
+								veryPoor : 0,
+								poor : 0,
+								good : 0,
+								veryGood : 0,
+								excellent :0,
+								isQuesiont : false
+							}
+							data.survey.push(ax);
+						}
+						
+						var inputs = _.where(data.inputs,{answer_id : "" + a.answerId, question_id : "" + a.questionId})
+						console.log(inputs);
+						_.each(inputs,function(input){
+							if(parseInt(input.score) == 1){
+								ax.veryPoor++;
+							}else if(parseInt(input.score) == 2){
+								ax.poor++;
+							}
+							else if(parseInt(input.score) == 3){
+								ax.good++;
+							}else if(parseInt(input.score) == 4){
+								ax.veryGood++;
+							}else if(parseInt(input.score) == 5){
+								ax.excellent++;
+							}
+						});
+						
+						
+					});
+				});
+				data.question = null;
+				data.inputs = null;
+				data.answers = null;
+				console.log(data);
+				invoke.resolve(data);
+			});
+			return invoke;
+		},
+		
 	};
 
 	return ReportController;

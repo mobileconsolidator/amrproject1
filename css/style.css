@@ -30,7 +30,7 @@ nav ul{
 	margin:0!important;
 }
 nav li a{
-	margin-right:12.5%!important;
+	margin-right:2.7em!important;
 }
 nav li:last-child a{
 	margin-right:0%!important;
@@ -45,4 +45,7 @@ nav li:last-child a{
 header .company-name{
 	float:right;
 	width:99%;
+}
+.text-bold{
+font-weight:bold;
 }

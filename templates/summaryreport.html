@@ -1,0 +1,50 @@
+
+<div class="panel panel-default">
+  <div class="panel-heading text-center">Summary Report</div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-body">
+	<table class="table">
+		<thead>
+			<th>Survey Question</th>
+			<th>Pass</th>
+			<th>Fail</th>
+		<thead>
+		<tbody>
+			<tr>
+				<td><%= surveyQuestion%></td>
+				<td><%= surveyQuestionPass%></td>
+				<td><%= surveyQuestionFail%></td>
+			</tr>
+		</tbody>
+	</table>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-body">
+	<table class="table">
+		<thead>
+			<th></th>
+			<th>Very Poor</th>
+			<th>Poor</th>
+			<th>Good</th>
+			<th>Very Good</th>
+			<th>Excellent</th>
+		<thead>
+		<tbody>
+			<%
+				_.each(survey, function(row){ %>
+					<tr>
+						<td class='<%= (row.isQuestion) ?  "text-capitalize text-bold" : "text-right"  %> '><%= row.label %></td>
+						<td><%= row.veryPoor %></td>
+						<td><%= row.poor %></td>
+						<td><%= row.good %></td>
+						<td><%= row.veryGood %></td>
+						<td><%= row.excellent %></td>
+					</tr>
+				<%});
+			%>
+		</tbody>
+	</table>
+  </div>
+</div>
