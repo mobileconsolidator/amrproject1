@@ -13,6 +13,7 @@ define([
 	var AssessmentView = Backbone.Marionette.ItemView.extend({
 			template : tmpl,
 			scoreList : [],
+			id : "assessment-view",
 			events : {
 				"click #btnSubmit" : "saveAssessment",
 			},
@@ -37,9 +38,9 @@ define([
 				this.$el.find('.forms-view').html(this.formsView.el);
 				var _this = this;
 				ConfigController.getCompany().done(function(response){
-					var generalSurveyQuestionView = new GeneralSurveyQuestionView({model : new Backbone.Model(response[0])});
-					generalSurveyQuestionView.render();
-					_this.$el.find('.survey-question-view').html(generalSurveyQuestionView.el);
+					_this.generalSurveyQuestionView = new GeneralSurveyQuestionView({model : new Backbone.Model(response[0])});
+					_this.generalSurveyQuestionView.render();
+					_this.$el.find('.survey-question-view').html(_this.generalSurveyQuestionView.el);
 				});
 				ConfigController.getQuestions().done(function (response) {
 					var categoryList = new CategoryList();
@@ -69,6 +70,8 @@ define([
 					}
 				});
 				var _this = this;
+				var generalQuestion = this.generalSurveyQuestionView.getData();
+				formData.question_response = generalQuestion.isSuccess;
 				if(isValid){
 					if(formData.scoreList.length == 0){
 						this.dialog.showMessage('Empty Rating','Kindly rate at least one');

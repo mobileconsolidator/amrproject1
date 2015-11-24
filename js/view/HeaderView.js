@@ -13,6 +13,11 @@ define ([
 		initialize: function(options){
 			this.model = options.model;			
 		},
+		onBeforeRender:function(){
+			if(this.model.get('company_name') == undefined){
+				this.model.set('company_name','');
+			}
+		},
 		onRender: function(){
 			var template = _.template(this.template);
 			this.$el.html(template(this.model.attributes));

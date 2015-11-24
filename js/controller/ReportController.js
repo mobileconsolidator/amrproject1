@@ -62,9 +62,9 @@ define([
 			task2.done(function(response){
 				data.surveyQuestionPass = 0;
 				data.surveyQuestionFail = 0;
-				
+				console.log(response);
 				_.each(response,function(r){
-					if(r.general_question_response == 1){
+					if(parseInt(r.general_question_response) == 1){
 						data.surveyQuestionPass++;
 					}else{
 						data.surveyQuestionFail++;
@@ -78,16 +78,13 @@ define([
 			});
 			task4.done(function(response){
 				data.answers = response;
-				console.log(data.answers);
 			});
 			task5.done(function(response){
 				data.inputs = response;
-				console.log(data.inputs);
 			});
 			var _this = this;
 			$.when(task1,task2,task3,task4,task5).then(function(){
 				data.survey = [];
-				console.log(data.question);
 				_.each(data.question,function(r){
 					data.survey.push({
 						label : r.caption,
@@ -99,10 +96,7 @@ define([
 						isQuestion : true
 					});
 					_.each(r.items, function(a){
-						//var answer = _.findWhere(data.answers, {answerId:parseInt(a.answer_id)});
-						//console.log(answer);
 						var ax = _.findWhere(data.survey,{answerId : a.answerId, questionId : a.questionId});
-						console.log(ax);
 						if(ax == undefined){
 							ax = {
 								label : a.caption,
@@ -119,7 +113,6 @@ define([
 						}
 						
 						var inputs = _.where(data.inputs,{answer_id : "" + a.answerId, question_id : "" + a.questionId})
-						console.log(inputs);
 						_.each(inputs,function(input){
 							if(parseInt(input.score) == 1){
 								ax.veryPoor++;
@@ -141,7 +134,6 @@ define([
 				data.question = null;
 				data.inputs = null;
 				data.answers = null;
-				console.log(data);
 				invoke.resolve(data);
 			});
 			return invoke;

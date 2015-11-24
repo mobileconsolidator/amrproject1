@@ -19,6 +19,22 @@ define([
 				max : 5,
 				step: 1,
 				slide : function(event,ui){
+					$(this).removeClass('bg-verypoor');
+					$(this).removeClass('bg-poor');
+					$(this).removeClass('bg-good');
+					$(this).removeClass('bg-verygood');
+					$(this).removeClass('bg-excellent');
+					if(ui.value==1){
+						$(this).addClass('bg-verypoor');
+					}else if(ui.value==2){
+						$(this).addClass('bg-poor');
+					}else if(ui.value==3){
+						$(this).addClass('bg-good');
+					}else if(ui.value==4){
+						$(this).addClass('bg-verygood');
+					}else if(ui.value==5){
+						$(this).addClass('bg-excellent');
+					}
 					console.log(ui.value);
 					_this.setScore(ui.value);
 				}

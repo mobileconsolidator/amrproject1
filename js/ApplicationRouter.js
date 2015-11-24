@@ -23,10 +23,11 @@ define([
 			App.panel.showAssessmentView();
 		},
 		config : function(){
-			App.panel.showConfigView();
+			App.panel.showConfigView({model : App.user});
 		},
 		changePassword : function(){
-			App.panel.showChangePasswordView();
+			
+			App.panel.showChangePasswordView({model : App.user});
 		},
 		report: function(){
 			ReportController.getAllResult().done(function(response){

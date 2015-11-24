@@ -43,7 +43,7 @@ define([
 						if (response.data.length > 0) {
 							var model = response.data[0];
 							var bmodel = new Backbone.Model(model);
-							
+							App.user = bmodel;
 							if (model.isChangePassword) {
 								Backbone.history.navigate("changepassword",{trigger : true});
 							} else {

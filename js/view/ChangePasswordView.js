@@ -44,7 +44,8 @@ define([
 					console.log(response);
 					if(response.status){
 						_this.dialog.showMessage('Password Changed', 'Changed Successful').done(function () {
-							App.panel.showLoginView();
+							App.user = undefined;
+							Backbone.history.navigate("#",{trigger:true});
 						});
 					}else{
 						Utilities.displayMessage('#error-div', 'Changed Password encounter error');

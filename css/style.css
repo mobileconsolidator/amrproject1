@@ -49,3 +49,34 @@ header .company-name{
 .text-bold{
 font-weight:bold;
 }
+.slider{
+background:#ccc;
+}
+input,textarea{
+	background:#ccc!important;
+}
+.slider.bg-verypoor, .slider.bg-verypoor span{
+	background:red;
+	
+}
+.slider.bg-poor, .slider.bg-poor span{
+	background:orange;
+}
+.slider.bg-good,.slider.bg-good span{
+	background:yellow;
+}
+.slider.bg-verygood, .slider.bg-verygood span{
+	background:lawngreen;
+}
+.slider.bg-excellent, .slider.bg-excellent span{
+	background:lightgreen;
+}
+#assessment-view{
+	background:cyan;
+	font-weight:bold;
+}
+#assessment-view .panel-heading, #assessment-view .panel,#assessment-view .panel-body, #assessment-view .list-group-item, #assessment-view .pagination a{
+	background-color:inherit!important;
+	border-color:#fff!important;
+	border:0!important;
+}
